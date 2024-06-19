@@ -21,6 +21,6 @@ export const registerController = asyncHandler(async (req: Request, res: Respons
 
 export const loginController = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
-  const accessToken = await authService.login(email, password);
-  return res.status(200).json({ message: "Login successful", accessToken });
+  const { token, user } = await authService.login(email, password);
+  return res.status(200).json({ message: "Login successful", token, user });
 });
