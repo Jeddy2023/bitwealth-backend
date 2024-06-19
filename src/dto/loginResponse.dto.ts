@@ -7,5 +7,6 @@ export interface loginResponseDto {
     lastName: string,
     email: string,
     gender: Gender,
+    isAdmin: boolean
   }
 }
