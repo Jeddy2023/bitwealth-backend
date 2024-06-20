@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "../routes/auth.routes";
+import profileRoutes from "../routes/profile.routes";
+import { isLoggedIn } from "../middleware/isLoggedIn.middleware";
 import { Request, Response, NextFunction } from "express";
 dotenv.config();
 
@@ -26,6 +28,7 @@ try {
 
 app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/profile", isLoggedIn, profileRoutes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log(error.message);
