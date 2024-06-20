@@ -14,12 +14,33 @@ export class RegisterUserDto {
   static validationSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(6).required(),
+    email: Joi
+        .string()
+        .email()
+        .required()
+        .messages({
+          "string.email": "Please provide a valid email address"
+        }),
+    password: Joi
+        .string()
+        .pattern(new RegExp('(?=.*[A-Z])(?=.*[!@#$%^&*])'))
+        .min(5)
+        .max(16)
+        .required()
+        .messages({
+          "string.pattern.base": "Password must contain at least one uppercase letter and one symbol",
+          "string.min": "Password must contain at least 5 characters",
+          "string.max": "Password must be at most 16 characters long"
+        }),
     country: Joi.string().required(),
-    address: Joi.string().required(),
+    address: Joi.string().min(10).max(100).required().messages({
+      "string.min": "Address must contain at least 10 characters",
+      "string.max": "Address must be at most 100 characters long"
+    }),
     phoneNumber: Joi.string().required(),
-    gender: Joi.string().valid(...Object.values(Gender)).required()
+    gender: Joi.string().valid(...Object.values(Gender)).required().messages({
+      "any.only": "Gender must be male, female or other"
+    })
   });
 
   constructor(data: RegisterUserDto) {

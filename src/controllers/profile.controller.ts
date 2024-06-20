@@ -4,6 +4,7 @@ import ProfileServiceImpl from "../services/impl/profile.service.impl";
 import { ProfileDto } from "../dto/profile.dto";
 import { validator } from "../utils/validator.utils";
 import { ProfileEditDto } from "../dto/profileEdit.dto";
+import { ChangePasswordDto } from "../dto/changePassword.dto";
 import { asyncHandler } from "../middleware/asyncHandler.middleware";
 
 const profileService: ProfileServiceImpl = new ProfileServiceImpl();
@@ -25,7 +26,9 @@ export const editProfileController = asyncHandler(async (req: CustomRequest, res
 
 export const changePasswordController = asyncHandler(async (req: CustomRequest, res: Response) => {
   const userId = req.user;
-  const { oldPassword, newPassword } = req.body;
-  await profileService.changePassword(userId as string, oldPassword, newPassword);
+  const changePasswordDto = new ChangePasswordDto(req.body);
+  const errors = validator(ChangePasswordDto, changePasswordDto);
+  if (errors) return res.status(400).json({ message: "Validation Error", errors });
+  await profileService.changePassword(userId as string, changePasswordDto);
   return res.status(200).json({ message: "Password updated successfully" });
 });

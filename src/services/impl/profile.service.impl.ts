@@ -1,3 +1,4 @@
+import { ChangePasswordDto } from "../../dto/changePassword.dto";
 import { ProfileDto } from "../../dto/profile.dto";
 import { IUser, User } from "../../models/user.model";
 import { CustomError } from "../../utils/customError.utils";
@@ -6,23 +7,23 @@ import bcrypt from "bcryptjs";
 
 class ProfileServiceImpl implements ProfileService {
 
-  async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
+  async changePassword(userId: string, data: ChangePasswordDto): Promise<void> {
     const user: IUser | null = await User.findById(userId);
     if (!user) {
       throw new CustomError(404, "User not found");
     }
 
-    // verify that user is updating to new details
-    if (oldPassword === newPassword) {
-      throw new CustomError(400, "New password cannot be same as old");
-    }
-
-    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    const isMatch = await bcrypt.compare(data.oldPassword, user.password);
     if (!isMatch) {
       throw new CustomError(400, "Invalid old password");
     }
 
-    user.password = await bcrypt.hash(newPassword, Number(process.env.SALT));
+    // verify that user is updating to new details
+    if (data.oldPassword === data.newPassword) {
+      throw new CustomError(400, "New password cannot be same as old");
+    }
+
+    user.password = await bcrypt.hash(data.newPassword, Number(process.env.SALT));
     await user.save();
   }
 
