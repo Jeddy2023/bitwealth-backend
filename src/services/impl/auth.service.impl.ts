@@ -5,6 +5,7 @@ import { generateToken } from "../../utils/token.utils";
 import bcrypt from "bcryptjs";
 import { ObjectId } from "mongoose";
 import { RegisterUserDto } from "../../dto/registerUser.dto";
+import { loginResponseDto } from "../../dto/loginResponse.dto";
 
 class AuthServiceImpl implements AuthService {
   
@@ -24,7 +25,7 @@ class AuthServiceImpl implements AuthService {
     await user.save();
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(email: string, password: string): Promise<loginResponseDto> {
     const user = await User.findOne({ email });
     if (!user) {
       throw new CustomError(400, "Invalid email or password");
@@ -35,8 +36,17 @@ class AuthServiceImpl implements AuthService {
       throw new CustomError(400, "Invalid email or password");
     }
 
-    const token = await generateToken(user._id as ObjectId);
-    return token;
+    const token: string = await generateToken(user._id as ObjectId);
+    return {
+      token,
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        gender: user.gender,
+        isAdmin: user.isAdmin
+      }
+    }
   }
 }
 
