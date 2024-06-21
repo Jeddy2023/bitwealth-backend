@@ -34,11 +34,11 @@ app.use("/api/v1/profile", isLoggedIn, profileRoutes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log(error.message);
-  return res.status(error.statusCode).json({ error: error.message });
+  return res.status(error.statusCode).json({ message: error.message });
 });
 
 app.use((req: Request, res: Response) => {
-  return res.status(404).json({ error: "Oops, not found" });
+  return res.status(404).json({ message: "Oops, not found" });
 })
 
 export default app;
