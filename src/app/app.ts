@@ -4,6 +4,8 @@ import dbConnect from "../config/database";
 import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "../routes/auth.routes";
+import profileRoutes from "../routes/profile.routes";
+import { isLoggedIn } from "../middleware/isLoggedIn.middleware";
 import { Request, Response, NextFunction } from "express";
 dotenv.config();
 
@@ -28,14 +30,15 @@ try {
 
 app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/profile", isLoggedIn, profileRoutes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log(error.message);
-  return res.status(error.statusCode).json({ error: error.message });
+  return res.status(error.statusCode).json({ message: error.message });
 });
 
 app.use((req: Request, res: Response) => {
-  return res.status(404).json({ error: "Oops, not found" });
+  return res.status(404).json({ message: "Oops, not found" });
 })
 
 export default app;
