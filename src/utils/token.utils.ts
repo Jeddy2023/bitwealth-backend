@@ -5,8 +5,8 @@ import { Request } from "express";
 import { CustomError } from "./customError.utils";
 dotenv.config();
 
-export const generateToken = async (userId: ObjectId) => {
-  return jwt.sign({ sub: userId }, process.env.JWT_KEY as string, { expiresIn: "1d" });
+export const generateToken = async (userId: ObjectId, isAdmin: boolean) => {
+  return jwt.sign({ sub: userId, isAdmin }, process.env.JWT_KEY as string, { expiresIn: "1d" });
 }
 
 export const extractTokenFromRequest = (req: Request) => {

@@ -10,7 +10,8 @@ export interface IUser extends Document {
   address: string;
   phoneNumber: string;
   isAdmin: boolean;
-  gender: Gender;
+  gender: Gender
+  walletBalance: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -24,6 +25,7 @@ const UserSchema: Schema = new Schema({
   address: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
+  walletBalance: { type: Number, required: true, default: 0 },
   gender: { type: String, enum: Object.values(Gender), required: true },
 }, { timestamps: true });
 
