@@ -6,7 +6,7 @@ export class ProfileEditDto {
 
   static validationSchema = Joi.object({
     phoneNumber: Joi.string().optional(),
-    address: Joi.string().optional()
+    address: Joi.string().optional(),
   });
 
   constructor(phoneNumber: string, address: string) {

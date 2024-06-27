@@ -8,7 +8,7 @@ import { RegisterUserDto } from "../../dto/registerUser.dto";
 import { loginResponseDto } from "../../dto/loginResponse.dto";
 
 class AuthServiceImpl implements AuthService {
-  
+
   async register(registrationData: RegisterUserDto): Promise<void> {
     const existingUserEmail = await User.exists({ email: registrationData.email });
     if (existingUserEmail) {
@@ -36,7 +36,7 @@ class AuthServiceImpl implements AuthService {
       throw new CustomError(400, "Invalid email or password");
     }
 
-    const token: string = await generateToken(user._id as ObjectId);
+    const token: string = await generateToken(user._id as ObjectId, user.isAdmin);
     return {
       token,
       user: {
