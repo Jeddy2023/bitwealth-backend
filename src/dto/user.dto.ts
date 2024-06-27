@@ -4,6 +4,8 @@ export interface UserResponse {
   lastName: string;
   email: string;
   phoneNumber: string;
+  walletBalance: number;
+  address: string;
   country: string;
   createdAt: Date;
 }
