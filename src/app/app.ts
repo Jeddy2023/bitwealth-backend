@@ -5,12 +5,13 @@ import mongoose from "mongoose";
 import authRoutes from "../routes/auth.routes";
 import profileRoutes from "../routes/profile.routes";
 import userRoutes from "../routes/user.routes";
+import transactionRoutes from "../routes/transaction.routes";
 import { isLoggedIn } from "../middleware/isLoggedIn.middleware";
 import { Request, Response, NextFunction } from "express";
 dotenv.config();
 
 const app: express.Application = express();
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 const corsOptions = {
   origin: '*', // Allow requests from all origins (adjust for production)
   credentials: true, // Allow cookies for CORS requests
@@ -31,9 +32,10 @@ app.use(cors(corsOptions));
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", isLoggedIn, profileRoutes);
 app.use("/api/v1/users", isLoggedIn, userRoutes);
+app.use("/api/v1/transactions", isLoggedIn, transactionRoutes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(error.message);
+  console.log(error.stack);
   return res.status(error.statusCode).json({ message: error.message });
 });
 
