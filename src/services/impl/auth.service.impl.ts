@@ -43,6 +43,7 @@ class AuthServiceImpl implements AuthService {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        walletBalance: user.walletBalance,
         gender: user.gender,
         isAdmin: user.isAdmin
       }
