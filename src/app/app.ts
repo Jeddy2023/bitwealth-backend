@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 import authRoutes from "../routes/auth.routes";
 import profileRoutes from "../routes/profile.routes";
 import userRoutes from "../routes/user.routes";
+import dashboardRoutes from "../routes/dashboard.routes";
 import transactionRoutes from "../routes/transaction.routes";
 import { isLoggedIn } from "../middleware/isLoggedIn.middleware";
 import { Request, Response, NextFunction } from "express";
@@ -35,6 +36,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", isLoggedIn, profileRoutes);
 app.use("/api/v1/users", isLoggedIn, userRoutes);
 app.use("/api/v1/transactions", isLoggedIn, transactionRoutes);
+app.use("/api/v1/dashboard", isLoggedIn, dashboardRoutes);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   console.log(error.stack);
