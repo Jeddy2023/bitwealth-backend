@@ -24,5 +24,5 @@ export const listDepositsController = asyncHandler(async (req: CustomRequest, re
   const page = parseInt(req.query.page as string) || 1;
   const pageSize = parseInt(req.query.pageSize as string) || 10;
   const deposits = await transactionService.listDeposits(page, pageSize);
-  return res.status(200).json({ deposits });
+  return res.status(200).json(deposits);
 });
