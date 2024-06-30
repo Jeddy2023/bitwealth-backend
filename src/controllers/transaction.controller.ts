@@ -26,3 +26,11 @@ export const listDepositsController = asyncHandler(async (req: CustomRequest, re
   const deposits = await transactionService.listDeposits(page, pageSize);
   return res.status(200).json(deposits);
 });
+
+export const listUsersDepositsController = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const userId = req.user as string;
+  const page = parseInt(req.query.page as string) || 1;
+  const pageSize = parseInt(req.query.pageSize as string) || 10;
+  const deposits = await transactionService.listUsersDeposits(userId, page, pageSize);
+  return res.status(200).json(deposits);
+});
