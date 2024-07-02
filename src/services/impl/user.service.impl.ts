@@ -21,17 +21,38 @@ class UserServiceImpl implements UserService {
       throw new CustomError(404, "User not found");
     }
 
-    const { walletBalance } = data;
-    if (!walletBalance) {
-      throw new CustomError(400, "No data to update");
+    const { bonusBalance, profitBalance, depositBalance } = data;
+    if (bonusBalance === undefined && profitBalance === undefined && depositBalance === undefined) {
+      throw new CustomError(400, "No balances provided for update");
     }
 
     // verify user is updating to new details
-    if (walletBalance && walletBalance === user.walletBalance) {
-      throw new CustomError(400, "New wallet balance cannot be same as old");
+    let isUpdated = false;
+
+    if (bonusBalance !== undefined) {
+      if (bonusBalance !== user.bonusBalance) {
+        user.bonusBalance = bonusBalance;
+        isUpdated = true;
+      }
     }
 
-    if (walletBalance) user.walletBalance = walletBalance;
+    if (profitBalance !== undefined) {
+      if (profitBalance !== user.profitBalance) {
+        user.profitBalance = profitBalance;
+        isUpdated = true;
+      }
+    }
+
+    if (depositBalance !== undefined) {
+      if (depositBalance !== user.depositBalance) {
+        user.depositBalance = depositBalance;
+        isUpdated = true;
+      }
+    }
+
+    if (!isUpdated) {
+      throw new CustomError(400, "No changes made to balances");
+    }
 
     await user.save();
   }
@@ -48,6 +69,9 @@ class UserServiceImpl implements UserService {
         phoneNumber: user.phoneNumber,
         address: user.address,
         walletBalance: user.walletBalance,
+        bonusBalance: user.bonusBalance,
+        depositBalance: user.depositBalance,
+        profitBalance: user.profitBalance,
         country: user.country,
         createdAt: user.createdAt
       };
@@ -67,6 +91,9 @@ class UserServiceImpl implements UserService {
       email: user.email,
       phoneNumber: user.phoneNumber,
       walletBalance: user.walletBalance,
+      bonusBalance: user.bonusBalance,
+      depositBalance: user.depositBalance,
+      profitBalance: user.profitBalance,
       address: user.address,
       country: user.country,
       createdAt: user.createdAt

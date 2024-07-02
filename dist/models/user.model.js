@@ -36,6 +36,22 @@ const UserSchema = new mongoose_1.Schema({
     address: { type: String, required: true },
     phoneNumber: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    walletBalance: { type: Number, required: true, default: 0 },
+    bonusBalance: { type: Number, required: true, default: 30 },
+    profitBalance: { type: Number, required: true, default: 0 },
+    depositBalance: { type: Number, required: true, default: 0 },
     gender: { type: String, enum: Object.values(gender_enum_1.Gender), required: true },
 }, { timestamps: true });
+UserSchema.pre('save', function (next) {
+    this.walletBalance = this.bonusBalance + this.depositBalance + this.profitBalance;
+    next();
+});
+UserSchema.pre('findOneAndUpdate', function (next) {
+    const update = this.getUpdate();
+    if (update.bonusBalance !== undefined || update.depositBalance !== undefined || update.profitBalance !== undefined) {
+        update.walletBalance = (update.bonusBalance || 0) + (update.depositBalance || 0) + (update.profitBalance || 0);
+        this.setUpdate(update);
+    }
+    next();
+});
 exports.User = mongoose_1.default.model("User", UserSchema);
