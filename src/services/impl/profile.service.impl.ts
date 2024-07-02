@@ -1,5 +1,6 @@
 import { ChangePasswordDto } from "../../dto/changePassword.dto";
 import { ProfileDto } from "../../dto/profile.dto";
+import { UserWalletResponse } from "../../dto/userWallet.dto";
 import { IUser, User } from "../../models/user.model";
 import { CustomError } from "../../utils/customError.utils";
 import { ProfileService } from "../profile.service";
@@ -63,6 +64,20 @@ class ProfileServiceImpl implements ProfileService {
       phoneNumber: user.phoneNumber,
       address: user.address
     }
+  }
+
+  async getUserWalletDetails(userId: string): Promise<UserWalletResponse> {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError(404, "User not found");
+    }
+
+    return {
+      walletBalance: user.walletBalance,
+      bonusBalance: user.bonusBalance,
+      profitBalance: user.profitBalance,
+      depositBalance: user.depositBalance,
+    };
   }
 
 }

@@ -8,8 +8,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const customError_utils_1 = require("./customError.utils");
 dotenv_1.default.config();
-const generateToken = async (userId) => {
-    return jsonwebtoken_1.default.sign({ sub: userId }, process.env.JWT_KEY, { expiresIn: "1d" });
+const generateToken = async (userId, isAdmin) => {
+    return jsonwebtoken_1.default.sign({ sub: userId, isAdmin }, process.env.JWT_KEY, { expiresIn: "1d" });
 };
 exports.generateToken = generateToken;
 const extractTokenFromRequest = (req) => {

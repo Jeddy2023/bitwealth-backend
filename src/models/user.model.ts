@@ -12,13 +12,16 @@ export interface IUser extends Document {
   isAdmin: boolean;
   gender: Gender
   walletBalance: number;
+  bonusBalance: number;
+  profitBalance: number;
+  depositBalance: number;
   createdAt: Date;
   updatedAt: Date;
 };
 
 const UserSchema: Schema = new Schema({
   firstName: { type: String, required: true },
-  lastName: { type: String, required: true},
+  lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true, minLength: 6 },
   country: { type: String, required: true },
@@ -26,7 +29,24 @@ const UserSchema: Schema = new Schema({
   phoneNumber: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   walletBalance: { type: Number, required: true, default: 0 },
+  bonusBalance: { type: Number, required: true, default: 30 },
+  profitBalance: { type: Number, required: true, default: 0 },
+  depositBalance: { type: Number, required: true, default: 0 },
   gender: { type: String, enum: Object.values(Gender), required: true },
 }, { timestamps: true });
+
+UserSchema.pre<IUser>('save', function (next) {
+  this.walletBalance = this.bonusBalance + this.depositBalance + this.profitBalance;
+  next();
+});
+
+UserSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate() as any;
+  if (update.bonusBalance !== undefined || update.depositBalance !== undefined || update.profitBalance !== undefined) {
+    update.walletBalance = (update.bonusBalance || 0) + (update.depositBalance || 0) + (update.profitBalance || 0);
+    this.setUpdate(update);
+  }
+  next();
+});
 
 export const User = mongoose.model<IUser>("User", UserSchema);

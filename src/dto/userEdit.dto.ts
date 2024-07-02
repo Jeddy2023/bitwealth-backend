@@ -1,17 +1,27 @@
 import Joi from "joi";
 
 export class UserEditDto {
-  walletBalance: number;
+  bonusBalance?: number;
+  profitBalance?: number;
+  depositBalance?: number;
 
   static validationSchema = Joi.object({
     phoneNumber: Joi.string().optional(),
     address: Joi.string().optional(),
-    walletBalance: Joi.number().min(0).optional().messages({
-      "number.min": "Wallet balance must be a positive number"
-    })
+    bonusBalance: Joi.number().min(0).optional().messages({
+      "number.min": "Bonus balance must be a positive number"
+    }),
+    profitBalance: Joi.number().min(0).optional().messages({
+      "number.min": "Profit balance must be a positive number"
+    }),
+    depositBalance: Joi.number().min(0).optional().messages({
+      "number.min": "Deposit balance must be a positive number"
+    }),
   });
 
-  constructor(walletBalance: number) {
-    this.walletBalance = walletBalance;
+  constructor(bonusBalance?: number, profitBalance?: number, depositBalance?: number) {
+    this.bonusBalance = bonusBalance;
+    this.profitBalance = profitBalance;
+    this.depositBalance = depositBalance;
   }
 }

@@ -6,6 +6,7 @@ import { validator } from "../utils/validator.utils";
 import { ProfileEditDto } from "../dto/profileEdit.dto";
 import { ChangePasswordDto } from "../dto/changePassword.dto";
 import { asyncHandler } from "../middleware/asyncHandler.middleware";
+import { UserWalletResponse } from "../dto/userWallet.dto";
 
 const profileService: ProfileServiceImpl = new ProfileServiceImpl();
 
@@ -13,6 +14,12 @@ export const getProfileController = asyncHandler(async (req: CustomRequest, res:
   const userId = req.user;
   const userProfile: ProfileDto = await profileService.getUserProfile(userId as string);
   return res.status(200).json({ profileData: userProfile });
+});
+
+export const getWalletDetailsController = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const userId = req.user;
+  const userWalletDetails: UserWalletResponse = await profileService.getUserWalletDetails(userId as string);
+  return res.status(200).json({ walletDetails: userWalletDetails });
 });
 
 export const editProfileController = asyncHandler(async (req: CustomRequest, res: Response) => {
