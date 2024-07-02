@@ -30,13 +30,14 @@ class AuthServiceImpl {
         if (!passwordIsValid) {
             throw new customError_utils_1.CustomError(400, "Invalid email or password");
         }
-        const token = await (0, token_utils_1.generateToken)(user._id);
+        const token = await (0, token_utils_1.generateToken)(user._id, user.isAdmin);
         return {
             token,
             user: {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                walletBalance: user.walletBalance,
                 gender: user.gender,
                 isAdmin: user.isAdmin
             }

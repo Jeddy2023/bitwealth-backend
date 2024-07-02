@@ -14,5 +14,5 @@ class ProfileEditDto {
 exports.ProfileEditDto = ProfileEditDto;
 ProfileEditDto.validationSchema = joi_1.default.object({
     phoneNumber: joi_1.default.string().optional(),
-    address: joi_1.default.string().optional()
+    address: joi_1.default.string().optional(),
 });
