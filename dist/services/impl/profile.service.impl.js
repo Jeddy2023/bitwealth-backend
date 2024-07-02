@@ -56,5 +56,17 @@ class ProfileServiceImpl {
             address: user.address
         };
     }
+    async getUserWalletDetails(userId) {
+        const user = await user_model_1.User.findById(userId);
+        if (!user) {
+            throw new customError_utils_1.CustomError(404, "User not found");
+        }
+        return {
+            walletBalance: user.walletBalance,
+            bonusBalance: user.bonusBalance,
+            profitBalance: user.profitBalance,
+            depositBalance: user.depositBalance,
+        };
+    }
 }
 exports.default = ProfileServiceImpl;
