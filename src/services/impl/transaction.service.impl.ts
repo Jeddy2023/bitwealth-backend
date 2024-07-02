@@ -5,8 +5,22 @@ import { TransactionService } from "../transaction.service";
 import Cloudinary from "../../config/cloudinary-config";
 import { Deposit } from "../../models/deposit.model";
 import { listDepositsDto } from "../../dto/listDeposits.dto";
+import { UsersDepositsDto } from "../../dto/listUsersDeposits.dto";
 
 class TransactionServiceImpl implements TransactionService {
+
+  async listUsersDeposits(userId: string, page: number, pageSize: number): Promise<UsersDepositsDto[]> {
+    const offset = (page - 1) * pageSize;
+    const deposits = await Deposit.find({ user: userId }).skip(offset).limit(pageSize).sort({ createdAt: -1 });
+    return deposits.map(deposit => {
+      return {
+        amount: deposit.amount,
+        paymentMethod: deposit.paymentMethod,
+        proofOfPayment: deposit.proofOfPayment,
+        createdAt: deposit.createdAt
+      }
+    });
+  }
 
   async listDeposits(page: number, pageSize: number): Promise<listDepositsDto[]> {
     const offset = (page - 1) * pageSize;
