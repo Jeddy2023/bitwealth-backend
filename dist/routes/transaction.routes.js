@@ -14,4 +14,5 @@ router.post("/deposit", (req, res, next) => {
     });
 }, transaction_controller_1.createDepositController);
 router.get("/list-deposits", isAdmin_middleware_1.isAdmin, transaction_controller_1.listDepositsController);
+router.get("/list-users-deposits", transaction_controller_1.listUsersDepositsController);
 exports.default = router;

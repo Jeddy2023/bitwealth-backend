@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listDepositsController = exports.createDepositController = void 0;
+exports.listUsersDepositsController = exports.listDepositsController = exports.createDepositController = void 0;
 const transaction_service_impl_1 = __importDefault(require("../services/impl/transaction.service.impl"));
 const createDeposit_dto_1 = require("../dto/createDeposit.dto");
 const asyncHandler_middleware_1 = require("../middleware/asyncHandler.middleware");
@@ -25,5 +25,12 @@ exports.listDepositsController = (0, asyncHandler_middleware_1.asyncHandler)(asy
     const page = parseInt(req.query.page) || 1;
     const pageSize = parseInt(req.query.pageSize) || 10;
     const deposits = await transactionService.listDeposits(page, pageSize);
+    return res.status(200).json(deposits);
+});
+exports.listUsersDepositsController = (0, asyncHandler_middleware_1.asyncHandler)(async (req, res) => {
+    const userId = req.user;
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10;
+    const deposits = await transactionService.listUsersDeposits(userId, page, pageSize);
     return res.status(200).json(deposits);
 });

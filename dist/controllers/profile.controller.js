@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.changePasswordController = exports.editProfileController = exports.getProfileController = void 0;
+exports.changePasswordController = exports.editProfileController = exports.getWalletDetailsController = exports.getProfileController = void 0;
 const profile_service_impl_1 = __importDefault(require("../services/impl/profile.service.impl"));
 const validator_utils_1 = require("../utils/validator.utils");
 const profileEdit_dto_1 = require("../dto/profileEdit.dto");
@@ -14,6 +14,11 @@ exports.getProfileController = (0, asyncHandler_middleware_1.asyncHandler)(async
     const userId = req.user;
     const userProfile = await profileService.getUserProfile(userId);
     return res.status(200).json({ profileData: userProfile });
+});
+exports.getWalletDetailsController = (0, asyncHandler_middleware_1.asyncHandler)(async (req, res) => {
+    const userId = req.user;
+    const userWalletDetails = await profileService.getUserWalletDetails(userId);
+    return res.status(200).json({ walletDetails: userWalletDetails });
 });
 exports.editProfileController = (0, asyncHandler_middleware_1.asyncHandler)(async (req, res) => {
     const userId = req.user;

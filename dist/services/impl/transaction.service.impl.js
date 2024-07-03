@@ -8,6 +8,20 @@ const customError_utils_1 = require("../../utils/customError.utils");
 const cloudinary_config_1 = __importDefault(require("../../config/cloudinary-config"));
 const deposit_model_1 = require("../../models/deposit.model");
 class TransactionServiceImpl {
+    async listUsersDeposits(userId, page, pageSize) {
+        const offset = (page - 1) * pageSize;
+        const deposits = await deposit_model_1.Deposit.find({ user: userId }).skip(offset).limit(pageSize).sort({ createdAt: -1 });
+        return deposits.map(deposit => {
+            return {
+                id: deposit._id,
+                amount: deposit.amount,
+                paymentMethod: deposit.paymentMethod,
+                proofOfPayment: deposit.proofOfPayment,
+                transactionId: deposit.transactionId,
+                createdAt: deposit.createdAt
+            };
+        });
+    }
     async listDeposits(page, pageSize) {
         const offset = (page - 1) * pageSize;
         const deposits = await deposit_model_1.Deposit.find().populate('user').skip(offset).limit(pageSize).sort({ createdAt: -1 });

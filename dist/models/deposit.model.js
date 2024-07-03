@@ -28,8 +28,15 @@ const mongoose_1 = __importStar(require("mongoose"));
 ;
 const depositSchema = new mongoose_1.Schema({
     user: { type: mongoose_1.Schema.Types.ObjectId, ref: "User" },
+    transactionId: { type: Number, required: true },
     amount: { type: Number, required: true },
     paymentMethod: { type: String, required: true },
     proofOfPayment: { type: String, required: true },
 }, { timestamps: true });
+depositSchema.pre("save", function (next) {
+    if (!this.transactionId) {
+        this.transactionId = Math.floor(1000000 + Math.random() * 9000000);
+    }
+    next();
+});
 exports.Deposit = mongoose_1.default.model("Deposit", depositSchema);

@@ -4,6 +4,7 @@ const express_1 = require("express");
 const profile_controller_1 = require("../controllers/profile.controller");
 const router = (0, express_1.Router)();
 router.get("", profile_controller_1.getProfileController);
+router.get("/wallet-details", profile_controller_1.getWalletDetailsController);
 router.patch("/edit", profile_controller_1.editProfileController);
 router.patch("/change-password", profile_controller_1.changePasswordController);
 exports.default = router;
