@@ -5,4 +5,5 @@ const isAdmin_middleware_1 = require("../middleware/isAdmin.middleware");
 const dashboard_controller_1 = require("../controllers/dashboard.controller");
 const router = (0, express_1.Router)();
 router.get("", isAdmin_middleware_1.isAdmin, dashboard_controller_1.getDashboardDataController);
+router.post("/send-email", isAdmin_middleware_1.isAdmin, dashboard_controller_1.sendEmailController);
 exports.default = router;
