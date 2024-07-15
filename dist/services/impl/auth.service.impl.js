@@ -39,7 +39,8 @@ class AuthServiceImpl {
                 email: user.email,
                 walletBalance: user.walletBalance,
                 gender: user.gender,
-                isAdmin: user.isAdmin
+                isAdmin: user.isAdmin,
+                isVerified: user.isVerified
             }
         };
     }

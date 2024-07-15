@@ -9,5 +9,6 @@ export interface loginResponseDto {
     gender: Gender,
     walletBalance: number,
     isAdmin: boolean
+    isVerified: boolean
   }
 }

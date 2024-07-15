@@ -36,6 +36,7 @@ const UserSchema = new mongoose_1.Schema({
     address: { type: String, required: true },
     phoneNumber: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
     walletBalance: { type: Number, required: true, default: 0 },
     bonusBalance: { type: Number, required: true, default: 30 },
     profitBalance: { type: Number, required: true, default: 0 },
