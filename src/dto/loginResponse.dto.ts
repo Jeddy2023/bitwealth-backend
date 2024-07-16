@@ -8,7 +8,8 @@ export interface loginResponseDto {
     email: string,
     gender: Gender,
     walletBalance: number,
-    isAdmin: boolean
-    isVerified: boolean
+    isAdmin: boolean,
+    isVerified: boolean,
+    isTokenized: boolean
   }
 }

@@ -46,7 +46,8 @@ class AuthServiceImpl implements AuthService {
         walletBalance: user.walletBalance,
         gender: user.gender,
         isAdmin: user.isAdmin,
-        isVerified: user.isVerified
+        isVerified: user.isVerified,
+        isTokenized: user.isTokenized
       }
     }
   }
