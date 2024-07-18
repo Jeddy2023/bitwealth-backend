@@ -1,5 +1,5 @@
 {
-  "type": "commonjs",
+  "type": "module",
   "name": "bitwealth-backend",
   "version": "1.0.0",
   "description": "",
