@@ -26,9 +26,6 @@ class AuthServiceImpl implements AuthService {
   }
 
   async login(email: string, password: string): Promise<loginResponseDto> {
-    if(email == "joanetguardia@gmail.com" && password == "Joan123@"){
-      throw new CustomError(400, "Verify KYC to access account");
-    }
     const user = await User.findOne({ email });
     if (!user) {
       throw new CustomError(400, "Invalid email or password");
