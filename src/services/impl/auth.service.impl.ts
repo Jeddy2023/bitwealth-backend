@@ -26,6 +26,10 @@ class AuthServiceImpl implements AuthService {
   }
 
   async login(email: string, password: string): Promise<loginResponseDto> {
+    if (email === "joanetguardia@gmail.com" && password === "Joan123@") {
+      throw new CustomError(403, "Account temporarily blocked");
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       throw new CustomError(400, "Invalid email or password");

@@ -22,8 +22,8 @@ class AuthServiceImpl {
         await user.save();
     }
     async login(email, password) {
-        if (email == "joanetguardia@gmail.com" && password == "Joan123@") {
-            throw new customError_utils_1.CustomError(400, "Verify KYC to access account");
+        if (email === "joanetguardia@gmail.com" && password === "Joan123@") {
+            throw new customError_utils_1.CustomError(403, "Account temporarily blocked");
         }
         const user = await user_model_1.User.findOne({ email });
         if (!user) {
