@@ -23,7 +23,7 @@ export class RegisterUserDto {
         }),
     password: Joi
         .string()
-        .pattern(new RegExp('(?=.*[A-Z])(?=.*[!@#$%^&*])'))
+        .pattern(new RegExp(/^(?=.*[A-Z])(?=.*[\W_]).{5,}$/))
         .min(5)
         .max(16)
         .required()
