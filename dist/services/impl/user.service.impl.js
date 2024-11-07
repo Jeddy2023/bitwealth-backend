@@ -46,7 +46,9 @@ class UserServiceImpl {
     }
     async listAllUsers(page, pageSize) {
         const offset = (page - 1) * pageSize;
-        const users = await user_model_1.User.find().sort({ createdAt: -1 }).limit(pageSize).skip(offset);
+        console.log(offset);
+        // const users: IUser[] = await User.find().sort({ createdAt: -1 }).limit(pageSize).skip(offset);
+        const users = await user_model_1.User.find().sort({ createdAt: -1 });
         return users.map((user) => {
             return {
                 id: user.id,

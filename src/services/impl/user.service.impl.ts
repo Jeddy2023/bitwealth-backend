@@ -59,7 +59,9 @@ class UserServiceImpl implements UserService {
 
   async listAllUsers(page: number, pageSize: number): Promise<UserResponse[]> {
     const offset = (page - 1) * pageSize;
-    const users: IUser[] = await User.find().sort({ createdAt: -1 }).limit(pageSize).skip(offset);
+    console.log(offset);
+    // const users: IUser[] = await User.find().sort({ createdAt: -1 }).limit(pageSize).skip(offset);
+    const users: IUser[] = await User.find().sort({ createdAt: -1 })
     return users.map((user: IUser) => {
       return {
         id: user.id,

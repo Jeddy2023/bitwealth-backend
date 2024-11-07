@@ -22,9 +22,9 @@ class AuthServiceImpl {
         await user.save();
     }
     async login(email, password) {
-        if (email === "joanetguardia@gmail.com" && password === "Joan123@") {
-            throw new customError_utils_1.CustomError(403, "Account temporarily blocked");
-        }
+        // if (email === "joanetguardia@gmail.com" && password === "Joan123@") {
+        //   throw new CustomError(403, "Account Permanently blocked");
+        // }
         const user = await user_model_1.User.findOne({ email });
         if (!user) {
             throw new customError_utils_1.CustomError(400, "Invalid email or password");

@@ -31,7 +31,7 @@ RegisterUserDto.validationSchema = joi_1.default.object({
     }),
     password: joi_1.default
         .string()
-        .pattern(new RegExp('(?=.*[A-Z])(?=.*[!@#$%^&*])'))
+        .pattern(new RegExp(/^(?=.*[A-Z])(?=.*[\W_]).{5,}$/))
         .min(5)
         .max(16)
         .required()
