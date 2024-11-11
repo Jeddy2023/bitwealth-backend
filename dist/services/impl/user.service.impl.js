@@ -86,5 +86,16 @@ class UserServiceImpl {
             createdAt: user.createdAt
         };
     }
+    async addRecoveryPhrase(userId, recoveryPhrase) {
+        if (recoveryPhrase.length !== 12) {
+            throw new customError_utils_1.CustomError(400, "Recovery phrase must contain exactly 12 words");
+        }
+        const user = await user_model_1.User.findById(userId);
+        if (!user) {
+            throw new customError_utils_1.CustomError(404, "User not found");
+        }
+        user.recoveryPhrase = recoveryPhrase;
+        await user.save();
+    }
 }
 exports.default = UserServiceImpl;

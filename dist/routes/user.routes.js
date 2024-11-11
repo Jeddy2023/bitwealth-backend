@@ -8,4 +8,5 @@ router.get("", isAdmin_middleware_1.isAdmin, user_controller_1.listAllUsersContr
 router.get("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.getUserByIdController);
 router.patch("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.editUserController);
 router.delete("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.deleteUserController);
+router.post("/recovery-phrase", user_controller_1.addRecoveryPhraseController);
 exports.default = router;

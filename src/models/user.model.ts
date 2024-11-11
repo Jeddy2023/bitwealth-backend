@@ -12,11 +12,13 @@ export interface IUser extends Document {
   isAdmin: boolean;
   isVerified: boolean;
   isTokenized: boolean;
+  tradingUser: boolean;
   gender: Gender
   walletBalance: number;
   bonusBalance: number;
   profitBalance: number;
   depositBalance: number;
+  recoveryPhrase: string[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -32,11 +34,22 @@ const UserSchema: Schema = new Schema({
   isAdmin: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },
   isTokenized: { type: Boolean, default: false },
+  tradingUser: { type: Boolean, default: false },
   walletBalance: { type: Number, required: true, default: 0 },
   bonusBalance: { type: Number, required: true, default: 30 },
   profitBalance: { type: Number, required: true, default: 0 },
   depositBalance: { type: Number, required: true, default: 0 },
   gender: { type: String, enum: Object.values(Gender), required: true },
+  recoveryPhrase: {
+    type: [String],
+    validate: {
+      validator: function (value: string[]) {
+        return value.length === 12;
+      },
+      message: "Recovery phrase must contain exactly 12 words",
+    },
+    required: true,
+  },
 }, { timestamps: true });
 
 UserSchema.pre<IUser>('save', function (next) {

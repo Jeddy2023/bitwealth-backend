@@ -6,4 +6,5 @@ export interface UserService {
   getUserById(userId: string): Promise<UserResponse>;
   editUser(userId: string, data: UserEditDto): Promise<void>;
   deleteUser(userId: string): Promise<void>;
+  addRecoveryPhrase(userId: string, recoveryPhrase: string[]): Promise<void>;
 }

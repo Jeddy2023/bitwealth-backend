@@ -51,7 +51,8 @@ class AuthServiceImpl implements AuthService {
         gender: user.gender,
         isAdmin: user.isAdmin,
         isVerified: user.isVerified,
-        isTokenized: user.isTokenized
+        isTokenized: user.isTokenized,
+        tradingUser: user.tradingUser
       }
     }
   }

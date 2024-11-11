@@ -10,6 +10,7 @@ export interface loginResponseDto {
     walletBalance: number,
     isAdmin: boolean,
     isVerified: boolean,
-    isTokenized: boolean
+    isTokenized: boolean,
+    tradingUser: boolean
   }
 }

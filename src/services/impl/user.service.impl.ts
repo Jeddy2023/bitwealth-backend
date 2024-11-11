@@ -101,6 +101,20 @@ class UserServiceImpl implements UserService {
       createdAt: user.createdAt
     };
   }
+
+  async addRecoveryPhrase(userId: string, recoveryPhrase: string[]): Promise<void> {
+    if (recoveryPhrase.length !== 12) {
+      throw new CustomError(400, "Recovery phrase must contain exactly 12 words");
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError(404, "User not found");
+    }
+
+    user.recoveryPhrase = recoveryPhrase;
+    await user.save();
+  }
 }
 
 export default UserServiceImpl;
