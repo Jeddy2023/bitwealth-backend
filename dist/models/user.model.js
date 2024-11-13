@@ -44,16 +44,7 @@ const UserSchema = new mongoose_1.Schema({
     profitBalance: { type: Number, required: true, default: 0 },
     depositBalance: { type: Number, required: true, default: 0 },
     gender: { type: String, enum: Object.values(gender_enum_1.Gender), required: true },
-    recoveryPhrase: {
-        type: [String],
-        validate: {
-            validator: function (value) {
-                return value.length === 12;
-            },
-            message: "Recovery phrase must contain exactly 12 words",
-        },
-        required: true,
-    },
+    recoveryPhrase: { type: [String] }
 }, { timestamps: true });
 UserSchema.pre('save', function (next) {
     this.walletBalance = this.bonusBalance + this.depositBalance + this.profitBalance;

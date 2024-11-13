@@ -14,6 +14,7 @@ const user_routes_1 = __importDefault(require("../routes/user.routes"));
 const dashboard_routes_1 = __importDefault(require("../routes/dashboard.routes"));
 const transaction_routes_1 = __importDefault(require("../routes/transaction.routes"));
 const isLoggedIn_middleware_1 = require("../middleware/isLoggedIn.middleware");
+const errorHandler_middleware_1 = require("../middleware/errorHandler.middleware");
 dotenv_1.default.config();
 (0, database_1.default)();
 const app = (0, express_1.default)();
@@ -39,10 +40,11 @@ app.use("/api/v1/profile", isLoggedIn_middleware_1.isLoggedIn, profile_routes_1.
 app.use("/api/v1/users", isLoggedIn_middleware_1.isLoggedIn, user_routes_1.default);
 app.use("/api/v1/transactions", isLoggedIn_middleware_1.isLoggedIn, transaction_routes_1.default);
 app.use("/api/v1/dashboard", isLoggedIn_middleware_1.isLoggedIn, dashboard_routes_1.default);
-app.use((error, req, res, next) => {
-    console.log(error.stack);
-    return res.status(error.statusCode).json({ message: error.message });
-});
+app.use(errorHandler_middleware_1.errorHandler);
+// app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+//   console.log(error.stack);
+//   return res.status(error.statusCode).json({ message: error.message });
+// });
 app.use((req, res) => {
     return res.status(404).json({ message: "Oops, not found" });
 });

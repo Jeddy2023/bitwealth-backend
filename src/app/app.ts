@@ -10,6 +10,7 @@ import dashboardRoutes from "../routes/dashboard.routes";
 import transactionRoutes from "../routes/transaction.routes";
 import { isLoggedIn } from "../middleware/isLoggedIn.middleware";
 import { Request, Response, NextFunction } from "express";
+import { errorHandler } from "../middleware/errorHandler.middleware";
 dotenv.config();
 
 dbConnect();
@@ -38,10 +39,11 @@ app.use("/api/v1/users", isLoggedIn, userRoutes);
 app.use("/api/v1/transactions", isLoggedIn, transactionRoutes);
 app.use("/api/v1/dashboard", isLoggedIn, dashboardRoutes);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(error.stack);
-  return res.status(error.statusCode).json({ message: error.message });
-});
+app.use(errorHandler);
+// app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+//   console.log(error.stack);
+//   return res.status(error.statusCode).json({ message: error.message });
+// });
 
 app.use((req: Request, res: Response) => {
   return res.status(404).json({ message: "Oops, not found" });

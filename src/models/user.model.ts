@@ -40,16 +40,7 @@ const UserSchema: Schema = new Schema({
   profitBalance: { type: Number, required: true, default: 0 },
   depositBalance: { type: Number, required: true, default: 0 },
   gender: { type: String, enum: Object.values(Gender), required: true },
-  recoveryPhrase: {
-    type: [String],
-    validate: {
-      validator: function (value: string[]) {
-        return value.length === 12;
-      },
-      message: "Recovery phrase must contain exactly 12 words",
-    },
-    required: true,
-  },
+  recoveryPhrase: { type: [String] }
 }, { timestamps: true });
 
 UserSchema.pre<IUser>('save', function (next) {
