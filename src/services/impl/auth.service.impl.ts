@@ -48,11 +48,14 @@ class AuthServiceImpl implements AuthService {
         lastName: user.lastName,
         email: user.email,
         walletBalance: user.walletBalance,
+        bonusBalance: user.bonusBalance,
+        profitBalance: user.profitBalance,
+        depositBalance: user.depositBalance,
         gender: user.gender,
         isAdmin: user.isAdmin,
         isVerified: user.isVerified,
         isTokenized: user.isTokenized,
-        tradingUser: user.tradingUser
+        tradingUser: user.tradingUser,
       }
     }
   }
