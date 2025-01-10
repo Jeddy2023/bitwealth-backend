@@ -22,10 +22,13 @@ export const getUserByIdController = asyncHandler(async (req: Request, res: Resp
 
 export const editUserController = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.params.userId;
-  const userEditDto = new UserEditDto(req.body.walletBalance);
-  const errors = validator(UserEditDto, userEditDto);
-  if (errors) return res.status(400).json({ message: "Validation Error", errors });
-  const data = req.body;
+  const data: UserEditDto = req.body;
+
+  const errors = validator(UserEditDto, data);
+  if (errors) {
+    return res.status(400).json({ message: "Validation Error", errors });
+  }
+
   await userService.editUser(userId, data);
   return res.status(200).json({ message: "User updated successfully" });
 });
@@ -46,4 +49,16 @@ export const addRecoveryPhraseController = asyncHandler(async (req: CustomReques
 
   await userService.addRecoveryPhrase(userId as string, recoveryPhrase);
   return res.status(200).json({ message: "Recovery phrase added successfully" });
+});
+
+export const getAllWalletAddressesController = asyncHandler(async (_req: CustomRequest, res: Response) => {
+  const walletAddresses = await userService.getAllWalletAddresses();
+  return res.status(200).json({ walletAddresses });
+});
+
+export const getUserErrorMessageController = asyncHandler(async (req: CustomRequest, res: Response) => {
+  const userId = req.user;
+  const errorMessage = await userService.getUserErrorMessage(userId as string);
+  const errorHeader = await userService.getUserErrorHeader(userId as string);
+  return res.status(200).json({ errorMessage, errorHeader });
 });

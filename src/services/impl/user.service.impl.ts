@@ -3,6 +3,7 @@ import { UserService } from "../user.service";
 import { UserResponse } from "../../dto/user.dto";
 import { CustomError } from "../../utils/customError.utils";
 import { UserEditDto } from "../../dto/userEdit.dto";
+import { IWalletAddress, WalletAddress } from "../../models/walletaddress.model";
 
 class UserServiceImpl implements UserService {
 
@@ -21,9 +22,15 @@ class UserServiceImpl implements UserService {
       throw new CustomError(404, "User not found");
     }
 
-    const { bonusBalance, profitBalance, depositBalance } = data;
-    if (bonusBalance === undefined && profitBalance === undefined && depositBalance === undefined) {
-      throw new CustomError(400, "No balances provided for update");
+    const { bonusBalance, profitBalance, depositBalance, errorMessage, errorHeader } = data;
+    if (
+      bonusBalance === undefined &&
+      profitBalance === undefined &&
+      depositBalance === undefined &&
+      errorMessage === undefined &&
+      errorHeader === undefined
+    ) {
+      throw new CustomError(400, "No fields provided for update");
     }
 
     // verify user is updating to new details
@@ -50,11 +57,39 @@ class UserServiceImpl implements UserService {
       }
     }
 
+    if (errorMessage !== undefined && errorMessage !== user.errorMessage) {
+      user.errorMessage = errorMessage.trim();
+      isUpdated = true;
+    }
+
+    if (errorHeader !== undefined && errorHeader !== user.errorHeader) {
+      user.errorHeader = errorHeader.trim();
+      isUpdated = true;
+    }
+
     if (!isUpdated) {
       throw new CustomError(400, "No changes made to balances");
     }
 
     await user.save();
+  }
+
+  async getUserErrorMessage(userId: string): Promise<string> {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError(404, "User not found");
+    }
+
+    return user.errorMessage;
+  }
+
+  async getUserErrorHeader(userId: string): Promise<string> {
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new CustomError(404, "User not found");
+    }
+
+    return user.errorHeader;
   }
 
   async listAllUsers(page: number, pageSize: number): Promise<UserResponse[]> {
@@ -69,6 +104,8 @@ class UserServiceImpl implements UserService {
         lastName: user.lastName,
         email: user.email,
         phoneNumber: user.phoneNumber,
+        errorMessage: user.errorMessage,
+        errorHeader: user.errorHeader,
         address: user.address,
         walletBalance: user.walletBalance,
         bonusBalance: user.bonusBalance,
@@ -97,6 +134,8 @@ class UserServiceImpl implements UserService {
       depositBalance: user.depositBalance,
       profitBalance: user.profitBalance,
       address: user.address,
+      errorMessage: user.errorMessage,
+      errorHeader: user.errorHeader,
       country: user.country,
       createdAt: user.createdAt
     };
@@ -114,6 +153,14 @@ class UserServiceImpl implements UserService {
 
     user.recoveryPhrase = recoveryPhrase;
     await user.save();
+  }
+
+  async getAllWalletAddresses(): Promise<IWalletAddress> {
+    const walletAddresses = await WalletAddress.findOne();
+    if (!walletAddresses) {
+      throw new CustomError(404, "Wallet addresses not found");
+    }
+    return walletAddresses;
   }
 }
 

@@ -1,9 +1,12 @@
+import { error } from "console";
 import Joi from "joi";
 
 export class UserEditDto {
   bonusBalance?: number;
   profitBalance?: number;
   depositBalance?: number;
+  errorMessage?: string;
+  errorHeader?: string;
 
   static validationSchema = Joi.object({
     phoneNumber: Joi.string().optional(),
@@ -17,11 +20,15 @@ export class UserEditDto {
     depositBalance: Joi.number().min(0).optional().messages({
       "number.min": "Deposit balance must be a positive number"
     }),
+    errorMessage: Joi.string().optional(),
+    errorHeader: Joi.string().optional(),
   });
 
-  constructor(bonusBalance?: number, profitBalance?: number, depositBalance?: number) {
+  constructor(bonusBalance?: number, profitBalance?: number, depositBalance?: number, errorMessage?: string, errorHeader?: string) {
     this.bonusBalance = bonusBalance;
     this.profitBalance = profitBalance;
     this.depositBalance = depositBalance;
+    this.errorMessage = errorMessage;
+    this.errorHeader = errorHeader;
   }
 }

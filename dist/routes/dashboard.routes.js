@@ -6,4 +6,5 @@ const dashboard_controller_1 = require("../controllers/dashboard.controller");
 const router = (0, express_1.Router)();
 router.get("", isAdmin_middleware_1.isAdmin, dashboard_controller_1.getDashboardDataController);
 router.post("/send-email", isAdmin_middleware_1.isAdmin, dashboard_controller_1.sendEmailController);
+router.patch("/wallet-details", isAdmin_middleware_1.isAdmin, dashboard_controller_1.updateWalletDetailsController);
 exports.default = router;

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const user_model_1 = require("../../models/user.model");
 const customError_utils_1 = require("../../utils/customError.utils");
+const walletaddress_model_1 = require("../../models/walletaddress.model");
 class UserServiceImpl {
     async deleteUser(userId) {
         const user = await user_model_1.User.findById(userId);
@@ -15,9 +16,13 @@ class UserServiceImpl {
         if (!user) {
             throw new customError_utils_1.CustomError(404, "User not found");
         }
-        const { bonusBalance, profitBalance, depositBalance } = data;
-        if (bonusBalance === undefined && profitBalance === undefined && depositBalance === undefined) {
-            throw new customError_utils_1.CustomError(400, "No balances provided for update");
+        const { bonusBalance, profitBalance, depositBalance, errorMessage, errorHeader } = data;
+        if (bonusBalance === undefined &&
+            profitBalance === undefined &&
+            depositBalance === undefined &&
+            errorMessage === undefined &&
+            errorHeader === undefined) {
+            throw new customError_utils_1.CustomError(400, "No fields provided for update");
         }
         // verify user is updating to new details
         let isUpdated = false;
@@ -39,10 +44,32 @@ class UserServiceImpl {
                 isUpdated = true;
             }
         }
+        if (errorMessage !== undefined && errorMessage !== user.errorMessage) {
+            user.errorMessage = errorMessage.trim();
+            isUpdated = true;
+        }
+        if (errorHeader !== undefined && errorHeader !== user.errorHeader) {
+            user.errorHeader = errorHeader.trim();
+            isUpdated = true;
+        }
         if (!isUpdated) {
             throw new customError_utils_1.CustomError(400, "No changes made to balances");
         }
         await user.save();
+    }
+    async getUserErrorMessage(userId) {
+        const user = await user_model_1.User.findById(userId);
+        if (!user) {
+            throw new customError_utils_1.CustomError(404, "User not found");
+        }
+        return user.errorMessage;
+    }
+    async getUserErrorHeader(userId) {
+        const user = await user_model_1.User.findById(userId);
+        if (!user) {
+            throw new customError_utils_1.CustomError(404, "User not found");
+        }
+        return user.errorHeader;
     }
     async listAllUsers(page, pageSize) {
         const offset = (page - 1) * pageSize;
@@ -56,6 +83,8 @@ class UserServiceImpl {
                 lastName: user.lastName,
                 email: user.email,
                 phoneNumber: user.phoneNumber,
+                errorMessage: user.errorMessage,
+                errorHeader: user.errorHeader,
                 address: user.address,
                 walletBalance: user.walletBalance,
                 bonusBalance: user.bonusBalance,
@@ -82,6 +111,8 @@ class UserServiceImpl {
             depositBalance: user.depositBalance,
             profitBalance: user.profitBalance,
             address: user.address,
+            errorMessage: user.errorMessage,
+            errorHeader: user.errorHeader,
             country: user.country,
             createdAt: user.createdAt
         };
@@ -96,6 +127,13 @@ class UserServiceImpl {
         }
         user.recoveryPhrase = recoveryPhrase;
         await user.save();
+    }
+    async getAllWalletAddresses() {
+        const walletAddresses = await walletaddress_model_1.WalletAddress.findOne();
+        if (!walletAddresses) {
+            throw new customError_utils_1.CustomError(404, "Wallet addresses not found");
+        }
+        return walletAddresses;
     }
 }
 exports.default = UserServiceImpl;

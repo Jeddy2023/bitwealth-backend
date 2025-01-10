@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendEmailController = exports.getDashboardDataController = void 0;
+exports.updateWalletDetailsController = exports.sendEmailController = exports.getDashboardDataController = void 0;
 const asyncHandler_middleware_1 = require("../middleware/asyncHandler.middleware");
 const dashboard_service_impl_1 = __importDefault(require("../services/impl/dashboard.service.impl"));
 const dashboardService = new dashboard_service_impl_1.default();
@@ -20,3 +20,14 @@ exports.sendEmailController = (0, asyncHandler_middleware_1.asyncHandler)(async 
     await dashboardService.sendEmail({ email, subject, message });
     res.status(200).json({ message: "Email sent successfully" });
 });
+const updateWalletDetailsController = async (req, res) => {
+    const walletDetails = req.body;
+    try {
+        await dashboardService.updateWalletDetails(walletDetails);
+        res.status(200).json({ message: "Wallet details updated successfully" });
+    }
+    catch (error) {
+        res.status(error.statusCode || 500).json({ message: error.message });
+    }
+};
+exports.updateWalletDetailsController = updateWalletDetailsController;

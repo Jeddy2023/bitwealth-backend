@@ -9,6 +9,8 @@ export interface UserResponse {
   profitBalance: number;
   depositBalance: number;
   address: string;
+  errorMessage: string;
+  errorHeader: string;
   country: string;
   createdAt: Date;
 }

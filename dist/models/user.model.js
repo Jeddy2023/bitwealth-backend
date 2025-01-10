@@ -34,6 +34,8 @@ const UserSchema = new mongoose_1.Schema({
     password: { type: String, required: true, minLength: 6 },
     country: { type: String, required: true },
     address: { type: String, required: true },
+    errorMessage: { type: String, default: '' },
+    errorHeader: { type: String, default: '' },
     phoneNumber: { type: String, required: true },
     isAdmin: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },

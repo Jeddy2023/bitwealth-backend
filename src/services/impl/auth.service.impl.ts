@@ -29,7 +29,6 @@ class AuthServiceImpl implements AuthService {
     // if (email === "joanetguardia@gmail.com" && password === "Joan123@") {
     //   throw new CustomError(403, "Account Permanently blocked");
     // }
-
     const user = await User.findOne({ email });
     if (!user) {
       throw new CustomError(400, "Invalid email or password");

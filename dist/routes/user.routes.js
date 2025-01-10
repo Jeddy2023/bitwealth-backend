@@ -9,4 +9,6 @@ router.get("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.getUserBy
 router.patch("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.editUserController);
 router.delete("/:userId", isAdmin_middleware_1.isAdmin, user_controller_1.deleteUserController);
 router.post("/recovery-phrase", user_controller_1.addRecoveryPhraseController);
+router.get("/application/wallet-addresses", user_controller_1.getAllWalletAddressesController);
+router.get("/application/error-message", user_controller_1.getUserErrorMessageController);
 exports.default = router;

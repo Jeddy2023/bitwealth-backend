@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserEditDto = void 0;
 const joi_1 = __importDefault(require("joi"));
 class UserEditDto {
-    constructor(bonusBalance, profitBalance, depositBalance) {
+    constructor(bonusBalance, profitBalance, depositBalance, errorMessage, errorHeader) {
         this.bonusBalance = bonusBalance;
         this.profitBalance = profitBalance;
         this.depositBalance = depositBalance;
+        this.errorMessage = errorMessage;
+        this.errorHeader = errorHeader;
     }
 }
 exports.UserEditDto = UserEditDto;
@@ -25,4 +27,6 @@ UserEditDto.validationSchema = joi_1.default.object({
     depositBalance: joi_1.default.number().min(0).optional().messages({
         "number.min": "Deposit balance must be a positive number"
     }),
+    errorMessage: joi_1.default.string().optional(),
+    errorHeader: joi_1.default.string().optional(),
 });
