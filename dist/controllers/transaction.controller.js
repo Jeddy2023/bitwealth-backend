@@ -16,6 +16,7 @@ exports.createDepositController = (0, asyncHandler_middleware_1.asyncHandler)(as
         return res.status(400).json({ message: "Validation Error", errors: ["Proof of payment is required as PNG, JPG or JPEG!"], });
     const createDepositDto = new createDeposit_dto_1.CreateDepositDto(req.body.amount, req.body.paymentMethod, req.file.path);
     const errors = (0, validator_utils_1.validator)(createDeposit_dto_1.CreateDepositDto, createDepositDto);
+    console.log(errors);
     if (errors)
         return res.status(400).json({ message: "Validation Error", errors });
     await transactionService.deposit(userId, createDepositDto);
